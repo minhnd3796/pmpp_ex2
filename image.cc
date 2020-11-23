@@ -10,21 +10,28 @@
 image_gpu::image_gpu(int w, int h) : width(w), height(h)
 {
 	// TODO: allocate GPU memory here
+	cudaMallocPitch((void**)&data, &pitch, width * sizeof(unsigned int), height);
 }
 
 image_gpu::~image_gpu()
 {
 	// TODO: free GPU memory here
+	cudaFree(data);
+	CUDA_CHECK_ERROR;
 }
 
 void image_cpu::upload(image_gpu &dst) const
 {
 	// TODO: Upload to a GPU image
+	cudaMemcpy2D(dst.data, dst.pitch, data, width * sizeof(unsigned int), width * sizeof(unsigned int), height, cudaMemcpyHostToDevice);
+	CUDA_CHECK_ERROR;
 }
 
 void image_cpu::download(const image_gpu &src)
 {
 	// TODO: Download from a GPU image
+	cudaMemcpy2D(data, width * sizeof(unsigned int), src.data, src.pitch, width * sizeof(unsigned int), height, cudaMemcpyDeviceToHost);
+	CUDA_CHECK_ERROR;
 }
 
 image_cpu::image_cpu(const char *fn)

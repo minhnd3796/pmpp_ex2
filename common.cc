@@ -9,15 +9,22 @@
 filterkernel_gpu::filterkernel_gpu(int size) : ks(size)
 {
 	// TODO
+	cudaMalloc((void**)&data, size * sizeof(float));
+	CUDA_CHECK_ERROR;
 }
 filterkernel_gpu::~filterkernel_gpu()
 {
 	// TODO
+	printf("Freeing kernel data on GPU\n");
+	cudaFree(data);
+	CUDA_CHECK_ERROR;
 }
 
 void filterkernel_cpu::upload(filterkernel_gpu &dst) const
 {
 	// TODO
+	cudaMemcpy(dst.data, data, sizeof(float) * ks, cudaMemcpyHostToDevice);
+	CUDA_CHECK_ERROR;
 }
 
 // Initializes the given 1D kernel with a univariate Gaussian

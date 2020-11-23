@@ -41,7 +41,7 @@ void conv_v_cpu(image_cpu &dst, const image_cpu &src, const filterkernel_cpu &ke
 			for (int i = 0; i < kernel.ks; i++) {
 				int yy = y + (i - kernel.ks / 2);
 
-				// Clamp to [0, w-1]
+				// Clamp to [0, h-1]
 				yy = std::max(std::min(yy, h - 1), 0);
 
 				unsigned int pixel = src.data[yy * w + x];
