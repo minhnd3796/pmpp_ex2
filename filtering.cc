@@ -40,7 +40,13 @@ void filtering(const char *imgfile, int ks)
 	h_img_3.save("out_gpu_smem.ppm");
 
 	// === Task 4 ===
+	image_cpu h_img_4(imgfile);
+	h_img_4.upload(d_img_src);
 	// TODO: Blur image on GPU (Constant memory)
+	conv_h_gpu_cmem(d_img_dst, d_img_src, d_kernel);
+	conv_v_gpu_cmem(d_img_src, d_img_dst, d_kernel);
+	h_img_4.download(d_img_src);
+	h_img_4.save("out_gpu_cmem.ppm");
 
 	// === Task 5 ===
 	// TODO: Blur image on GPU (L1/texture cache)
