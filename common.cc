@@ -15,7 +15,6 @@ filterkernel_gpu::filterkernel_gpu(int size) : ks(size)
 filterkernel_gpu::~filterkernel_gpu()
 {
 	// TODO
-	printf("Freeing kernel data on GPU\n");
 	cudaFree(data);
 	CUDA_CHECK_ERROR;
 }
